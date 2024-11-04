@@ -1,0 +1,35 @@
+service: lambda-esbuild-template
+
+plugins:
+  - serverless-offline # local execution
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: eu-west-1
+  timeout: 30   # Lambda timeout
+
+custom:
+  serverless-offline:
+    reloadHandler: true
+
+functions:
+  # Serverless Framework specific syntax
+  worker:
+    handler: dist/main.createWorkerHandler
+    events:
+      - httpApi:
+          path: /api/worker
+          method: GET
+  listTodos:
+    handler: dist/main.getAllTodosHandler
+    events:
+      - httpApi:
+          path: /api/todos
+          method: GET
+  createTodo:
+    handler: dist/main.createTodoHandler
+    events:
+      - httpApi:
+          path: /api/todo
+          method: POST
